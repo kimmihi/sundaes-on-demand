@@ -11,4 +11,15 @@ describe("Summary From Component Test", () => {
     expect(checkbox).not.toBeChecked();
     expect(submitButton).toBeDisabled();
   });
+
+  test("enabled button after check", () => {
+    render(<SummaryForm />);
+    const checkbox = screen.getByRole("checkbox", { name: "약관동의" });
+    const submitButton = screen.getByRole("button", { name: "주문" });
+
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+
+    expect(submitButton).toBeEnabled();
+  });
 });
