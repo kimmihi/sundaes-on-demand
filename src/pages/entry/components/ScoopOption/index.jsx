@@ -2,13 +2,23 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 export default function ScoopOption() {
   const [scoops, setScoops] = useState([]);
+  const [isError, setIsError] = useState(false);
+
+  const fetchData = async () => {
+    return await axios.get("http://localhost:3030/scoops");
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:3030/scoops").then((res) => {
-      setScoops(res.data);
-    });
+    fetchData()
+      .then((res) => {
+        setScoops(res.data);
+      })
+      .catch(() => {
+        setIsError(true);
+      });
   }, []);
   return (
-    <>
+    <div>
       {scoops.map((scoop) => (
         <img
           key={scoop.id}
@@ -16,6 +26,7 @@ export default function ScoopOption() {
           alt={`${scoop.name} scoop`}
         />
       ))}
-    </>
+      {isError && <div role="alert">error</div>}
+    </div>
   );
 }
